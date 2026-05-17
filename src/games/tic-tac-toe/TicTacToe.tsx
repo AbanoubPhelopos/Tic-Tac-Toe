@@ -1,7 +1,8 @@
 import { useState } from "react";
+import BackLink from "../../components/ui/BackLink";
 import Square from "./Square";
 
-function Board() {
+export default function TicTacToe() {
     const [squares, setSquares] = useState<string[]>(Array(9).fill(""));
     const [xIsNext, setXIsNext] = useState<boolean>(true);
 
@@ -9,32 +10,47 @@ function Board() {
         if (squares[i] !== "" || calculateWinner(squares)) {
             return;
         }
-        
+
         const nextSquares = squares.slice();
         nextSquares[i] = xIsNext ? "X" : "O";
         setSquares(nextSquares);
         setXIsNext(!xIsNext);
     }
 
+    const resetGame = () => {
+        setSquares(Array(9).fill(""));
+        setXIsNext(true);
+    };
+
     const winner = calculateWinner(squares);
     let status;
     if (winner) {
-        status = "Winner: " + winner;
+        status = `Winner: ${winner}`;
+    } else if (squares.every(s => s !== "")) {
+        status = "It's a Draw!";
     } else {
-        status = "Next player: " + (xIsNext ? "X" : "O");
+        status = `Next player: ${xIsNext ? "X" : "O"}`;
     }
 
+    const statusColor = winner
+        ? (winner === "X" ? "text-indigo-600" : "text-rose-600")
+        : squares.every(s => s !== "") ? "text-gray-500" : "text-gray-600";
+
     return (
-        <>
-            <div className="flex justify-center m-4">
-                <p className="font-bold shadow-xl shadow-gray-500/50 text-4xl text-gray-500 p-2">Tic Tac Toe</p>
+        <div className="flex flex-col items-center py-8">
+            <div className="flex justify-center mb-2">
+                <h1 className="font-black text-5xl md:text-6xl bg-clip-text text-transparent bg-linear-to-r from-indigo-500 to-rose-500 p-2 pb-4">
+                    Tic Tac Toe
+                </h1>
             </div>
-            
-            <div className="text-center mb-6 text-2xl font-semibold text-gray-600">
+
+            <BackLink />
+
+            <div className={`text-center my-6 text-2xl font-bold tracking-wide ${statusColor}`}>
                 {status}
             </div>
 
-            <div className="shadow-lg shadow-gray-500/50 p-4 w-fit m-auto rounded-xl">
+            <div className="bg-gray-50 p-6 w-fit m-auto rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100">
                 <div className="flex">
                     <Square value={squares[0]} onClick={() => handleClick(0)} />
                     <Square value={squares[1]} onClick={() => handleClick(1)} />
@@ -51,7 +67,15 @@ function Board() {
                     <Square value={squares[8]} onClick={() => handleClick(8)} />
                 </div>
             </div>
-        </>
+
+            <button
+                type="button"
+                onClick={resetGame}
+                className="mt-8 px-8 py-3 bg-white text-gray-800 border border-gray-200 rounded-xl font-bold hover:bg-gray-50 hover:shadow-md active:bg-gray-100 transition-all duration-200 cursor-pointer"
+            >
+                New Game
+            </button>
+        </div>
     );
 }
 
@@ -74,5 +98,3 @@ function calculateWinner(squares: string[]) {
     }
     return null;
 }
-
-export default Board;
