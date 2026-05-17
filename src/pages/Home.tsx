@@ -25,6 +25,12 @@ export default function Home() {
           to="/memory-match"
           color="bg-purple-50 hover:bg-purple-100"
         />
+        <GameCard
+          title="Wordle"
+          description="Guess the 5-letter word in 6 tries!"
+          to="/wordle"
+          color="bg-emerald-50 hover:bg-emerald-100"
+        />
       </div>
     </div>
   );
