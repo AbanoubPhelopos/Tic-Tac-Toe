@@ -19,6 +19,12 @@ export default function Home() {
           to="/connect-four"
           color="bg-yellow-50 hover:bg-yellow-100"
         />
+        <GameCard
+          title="Memory Match"
+          description="Flip cards and find matching pairs!"
+          to="/memory-match"
+          color="bg-purple-50 hover:bg-purple-100"
+        />
       </div>
     </div>
   );
